@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BooksController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,8 +16,20 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return redirect('/books');
+    return view('home', ['nav' => true]);
 });
 
-Route::resource('/books', BooksController::class);
+Route::get('/login', [UsersController::class, 'showLogin']);
+Route::post('/login', [UsersController::class, 'login']);
+Route::get('/register', [UsersController::class, 'showRegister']);
+Route::post('/register', [UsersController::class, 'register']);
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::post('/logout', [UsersController::class, 'logout']);
+    Route::get('/profile', [UsersController::class, 'showProfile']);
+    Route::post('/profile', [UsersController::class, 'profileUpdate']);
+});
+
+Route::resource('/books', BooksController::class)->middleware('admin')->except(['index', 'show']);
+Route::resource('/books', BooksController::class)->only(['index', 'show']);
 Route::post('/books/search', [BooksController::class, 'search']);

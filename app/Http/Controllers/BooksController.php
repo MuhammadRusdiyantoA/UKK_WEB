@@ -17,7 +17,7 @@ class BooksController extends Controller
     {
         $books = Book::all();
 
-        return view('home', ['nav' => true, 'books' => $books]);
+        return view('books_index', ['nav' => true, 'books' => $books]);
     }
 
     /**
@@ -67,7 +67,7 @@ class BooksController extends Controller
      */
     public function show(Book $book)
     {
-        //
+        return view('book_detail', ['nav' => true,'book' => $book]);
     }
 
     /**
@@ -76,10 +76,8 @@ class BooksController extends Controller
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Book $book)
     {
-        $book = Book::findOrFail($id);
-
         return view('forms.edit', ['book' => $book]);
     }
 
@@ -90,7 +88,7 @@ class BooksController extends Controller
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Book $book)
     {
         $request->validate([
             'title' => 'string|max:255',
@@ -98,7 +96,6 @@ class BooksController extends Controller
             'publisher' => 'string|max:255'
         ]);
 
-        $book = Book::findOrFail($id);
         $book->title = $request->title;
         $book->author = $request->author;
         $book->publisher = $request->publisher;
@@ -113,9 +110,8 @@ class BooksController extends Controller
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Book $book)
     {
-        $book = Book::findOrFail($id);
         Storage::delete($book->image);
         $book->delete();
 
@@ -127,6 +123,6 @@ class BooksController extends Controller
         $query = $request->search;
         $books = Book::where('title', 'like', '%'.$query.'%')->orWhere('author', 'like', '%'.$query.'%')->orWhere('publisher', 'like', '%'.$query.'%')->get();
 
-        return view('home', ['nav' => true, 'books' => $books]);
+        return view('books_index', ['nav' => true, 'books' => $books, 'query' => $query]);
     }
 }

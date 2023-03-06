@@ -1,34 +1,16 @@
 @extends('app')
 
 @section('title')
-    Homepage | LibraryApp
+    Home | LibraryApp
 @endsection
 
 @section('content')
-    <div class="m-8">
-        <div class="w-full pb-8 flex justify-between border-b border-b-blue-500">
-            <a href="/books/create" class="bg-blue-400 text-blue-50 py-2 px-4">Add New</a>
-            <form action="/books/search" method="POST">
-                @csrf
-                <input type="text" name="search" required class="py-2 px-4 outline-none border border-blue-400">
-                <button type="submit" class="bg-blue-400 text-blue-50 py-2 px-4">Search</button>
-            </form>
-        </div>
-        <div class="w-full flex flex-wrap">
-            @if ($books->isNotEmpty())
-                @foreach ($books as $book)
-                    <div class="w-48 h-min p-5 m-3 shadow-xl flex flex-col items-center flex-wrap">
-                        <p class="text-lg mb-2 break-all">{{$book->title}}</p>
-                        <img class="w-full h-48 object-cover" src="{{asset('storage/'.$book->image)}}" alt="{{$book->title}}">
-                        <form class="w-full mt-2 flex justify-between" method="POST" action="/books/{{$book->id}}">
-                            @method('DELETE')
-                            @csrf
-                            <a href="/books/{{$book->id}}/edit" class="bg-yellow-400 py-2 px-4">Edit</a>
-                            <button type="submit" class="bg-red-400 py-2 px-4">Delete</button>
-                        </form>
-                    </div>
-                @endforeach
-            @endif
-        </div>
+    <div class="w-full h-96 flex p-8 flex-col justify-center items-center">
+        <h1 class="font-semibold text-5xl mb-4">LibraryApp</h1>
+        <p class="text-xl mx-16 text-center">
+            Read <span class="font-semibold text-blue-500 uppercase">whatever</span> you like, 
+            <span class="font-semibold text-blue-500 uppercase">wherever</span> you like, 
+            <span class="font-semibold text-blue-500 uppercase">whenever</span> you like.
+        </p>
     </div>
 @endsection
