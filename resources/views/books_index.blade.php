@@ -7,8 +7,11 @@
 @section('content')
     <div class="m-8">
         <div class="w-full pb-8 flex justify-between border-b border-b-blue-500">
-            @if (auth()->user() && auth()->user()->isAdmin)    
-                <a href="/books/create" class="bg-blue-400 text-blue-50 py-2 px-4">Add New</a>
+            @if (auth()->user() && auth()->user()->isAdmin)
+                <div class="flex items-center">
+                    <a href="/books/create" class="bg-blue-400 text-blue-50 py-2 px-4 mr-2">Add New</a>
+                    <a href="/books/export" class="bg-green-400 text-blue-50 py-2 px-4 ml-2">Export to Excel</a>
+                </div>
             @else
                 <div></div>
             @endif

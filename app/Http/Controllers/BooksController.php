@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\BooksExport;
 use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BooksController extends Controller
 {
@@ -43,7 +45,8 @@ class BooksController extends Controller
             'img' => 'image|file',
             'stock' => 'numeric',
             'author' => 'string|max:255',
-            'publisher' => 'string|max:255'
+            'publisher' => 'string|max:255',
+            'blurb' => 'string'
         ]);
 
         $imgPath = $request->file('img')->store('book_cover');
@@ -53,7 +56,8 @@ class BooksController extends Controller
             'author' => $request->author,
             'publisher' => $request->publisher,
             'image' => $imgPath,
-            'stock' => $request->stock
+            'stock' => $request->stock,
+            'blurb' => $request->blurb
         ]);
 
         return redirect('/books');
@@ -93,15 +97,17 @@ class BooksController extends Controller
         $request->validate([
             'title' => 'string|max:255',
             'author' => 'string|max:255',
-            'publisher' => 'string|max:255'
+            'publisher' => 'string|max:255',
+            'blurb' => 'string'
         ]);
 
         $book->title = $request->title;
         $book->author = $request->author;
         $book->publisher = $request->publisher;
+        $book->blurb = $request->blurb;
         $book->save();
 
-        return redirect('/');
+        return redirect('/books');
     }
 
     /**
@@ -115,14 +121,25 @@ class BooksController extends Controller
         Storage::delete($book->image);
         $book->delete();
 
-        return redirect('/');
+        return redirect('/books');
     }
 
+    /*
+        Performs book search by title, author, and publisher
+    */
     public function search(Request $request)
     {
         $query = $request->search;
-        $books = Book::where('title', 'like', '%'.$query.'%')->orWhere('author', 'like', '%'.$query.'%')->orWhere('publisher', 'like', '%'.$query.'%')->get();
+        $books = Book::where('title', 'like', '%'.$query.'%')->orWhere('author', 'like', '%'.$query.'%')->orWhere('publisher', 'like', '%'.$query.'%')->orWhere('blurb', 'like', '%'.$query.'%')->get();
 
         return view('books_index', ['nav' => true, 'books' => $books, 'query' => $query]);
+    }
+
+    /*
+        Exports the content of books table into an excel file 
+    */
+    public function export()
+    {
+        return Excel::download(new BooksExport, 'Books Report at '.now().'.xlsx');
     }
 }

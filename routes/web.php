@@ -28,6 +28,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/logout', [UsersController::class, 'logout']);
     Route::get('/profile', [UsersController::class, 'showProfile']);
     Route::post('/profile', [UsersController::class, 'profileUpdate']);
+    Route::get('/books/export', [BooksController::class, 'export']);
 });
 
 Route::resource('/books', BooksController::class)->middleware('admin')->except(['index', 'show']);
