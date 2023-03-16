@@ -97,14 +97,23 @@ class BooksController extends Controller
         $request->validate([
             'title' => 'string|max:255',
             'author' => 'string|max:255',
+            'img' => 'image|file',
+            'stock' => 'numeric',
             'publisher' => 'string|max:255',
             'blurb' => 'string'
         ]);
+
+        if ($request->hasFile('img')) {
+            Storage::delete($book->image);
+            $imgPath = $request->file('img')->store('book_cover');
+            $book->image = $imgPath;
+        }
 
         $book->title = $request->title;
         $book->author = $request->author;
         $book->publisher = $request->publisher;
         $book->blurb = $request->blurb;
+        $book->stock = $request->stock;
         $book->save();
 
         return redirect('/books');

@@ -52,7 +52,12 @@ class UsersController extends Controller
             'username' => 'string|max:255',
             'email' => 'email|unique:users,email|max:255',
             'pass' => 'string|max:255',
+            'confirm' => 'string|max:255'
         ]);
+
+        if ($request->pass != $request->confirm) {
+            return back()->withErrors(['confirm' => 'error']);
+        }
 
         User::create([
             'name' => $validated['username'],
@@ -93,14 +98,28 @@ class UsersController extends Controller
     public function profileUpdate(Request $request) {
         $request->validate([
             'username' => 'string|max:255',
-            'profile' => 'image|file'
+            'profile' => 'image|file',
         ]);
 
-        $profilePath = $request->file('profile')->store('profiles');
+        if ($request->has('password')) {            
+            if ($request->password != $request->confirm) {
+                return back()->withErrors(['confirm' => 'error']);
+            }
+        }
 
         $user = User::findOrFail(auth()->user()->id);
         $user->name = $request->username;
         $user->password = $request->password ? $request->password : $user->password;
+
+        $profilePath = null;
+
+        if ($request->hasFile('profile')) {
+            $profilePath = $request->file('profile')->store('profiles');
+            if ($user->profile) {
+                Storage::delete($user->profile);
+            }
+        }
+
         $user->profile = $profilePath;
         $user->save();
 

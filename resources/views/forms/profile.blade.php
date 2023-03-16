@@ -26,7 +26,7 @@
                 <div class="m-2 flex flex-col">
                     <label class="mb-1" for="profile">Profile Picture</label>
                     <img class="w-64 h-64 object-cover" src="{{auth()->user()->profile ? asset('storage/'.auth()->user()->profile) : asset('assets/dummy_profile.png')}}" alt="{{auth()->user()->name}}'s Profile Picture">
-                    <input class="py-2 outline-none" type="file" name="profile" id="profile" required accept="image/*">
+                    <input class="py-2 outline-none" type="file" name="profile" id="profile" accept="image/*">
                 </div>
                 <button class="self-end mx-2 mt-2 py-2 px-4 bg-blue-500 text-blue-50" type="submit">Submit</button>
             </div>

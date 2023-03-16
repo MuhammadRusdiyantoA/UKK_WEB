@@ -15,27 +15,45 @@
             @csrf
             <div class="m-2 flex flex-col">
                 <label class="mb-1" for="title">Title</label>
-                <input class="py-2 px-4 outline-none" type="text" name="title" id="title" required>
+                <input class="py-2 px-4 outline-none" type="text" name="title" id="title" required maxlength="255">
+                @error('title')
+                    <p class="text-red-600">{{$errors->first('title')}}</p>
+                @enderror
             </div>
             <div class="m-2 flex flex-col">
                 <label class="mb-1" for="img">Cover</label>
                 <input class="py-2 outline-none" type="file" accept="image/*" name="img" id="img" required>
+                @error('img')
+                    <p class="text-red-600">{{$errors->first('img')}}</p>
+                @enderror
             </div>
             <div class="m-2 flex flex-col">
                 <label class="mb-1" for="stock">Stock</label>
-                <input class="py-2 px-4 outline-none" type="number" name="stock" id="stock" required>
+                <input class="py-2 px-4 outline-none" type="number" name="stock" id="stock" required min="0" max="2147483647">
+                @error('stock')
+                    <p class="text-red-600">{{$errors->first('stock')}}</p>
+                @enderror
             </div>
             <div class="m-2 flex flex-col">
                 <label class="mb-1" for="author">Author</label>
-                <input class="py-2 px-4 outline-none" type="text" name="author" id="author" required>
+                <input class="py-2 px-4 outline-none" type="text" name="author" id="author" required maxlength="255">
+                @error('author')
+                    <p class="text-red-600">{{$errors->first('author')}}</p>
+                @enderror
             </div>
             <div class="m-2 flex flex-col">
                 <label class="mb-1" for="publisher">Publisher</label>
-                <input class="py-2 px-4 outline-none" type="text" name="publisher" id="publisher" required>
+                <input class="py-2 px-4 outline-none" type="text" name="publisher" id="publisher" required maxlength="255">
+                @error('publisher')
+                    <p class="text-red-600">{{$errors->first('publisher')}}</p>
+                @enderror
             </div>
             <div class="m-2 flex flex-col">
                 <label class="mb-1" for="blurb">Blurb (Preview of Book's Content)</label>
                 <textarea class="py-2 px-4 h-36 outline-none" type="text" name="blurb" id="blurb" required></textarea>
+                @error('blurb')
+                    <p class="text-red-600">{{$errors->first('blurb')}}</p>
+                @enderror
             </div>
             <button class="self-start mx-2 mt-2 py-2 px-4 bg-blue-500 text-blue-50" type="submit">Submit</button>
         </form>
