@@ -78,3 +78,21 @@ dan pada Terminal 2
 ```
 npm run watch
 ```
+
+## Solving Error
+[Untuk Pengguna XAMPP]
+Jika terdapat error yang muncul saat proses instalasi package `maatwebsite/excel`, maka ikuti langkah - langkah berikut,
+
+1. Buka folder `XAMPP/PHP`
+
+2. Cari file php dengan extension .ini
+
+3. Buka file dengan notepad atau text editor lain
+
+4. Tekan `ctrl + f` dan cari `extension=gd`
+
+5. Hapus tanda titik koma `;` di awal baris
+
+6. Tekan `ctrl + s` untuk menyimpan perubahan
+
+7. Jalankan proses instalasi lagi
